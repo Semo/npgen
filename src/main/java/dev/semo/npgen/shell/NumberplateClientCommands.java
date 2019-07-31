@@ -8,6 +8,7 @@ import dev.semo.npgen.service.PostClient;
 import dev.semo.npgen.utils.NumberPlateUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -23,6 +24,9 @@ import java.util.concurrent.TimeUnit;
 public class NumberplateClientCommands {
 
     private static Logger log = LogManager.getLogger(NumberplateClientCommands.class);
+
+    @Autowired
+    private PostClient postClient;
 
     Runnable runnable = () -> {
         try {
@@ -57,9 +61,8 @@ public class NumberplateClientCommands {
 
     @ShellMethod("Sends one simple POST request.")
     public String one() throws FileNotFoundException {
-        PostClient rc = new PostClient();
         NumberPlateUtility np = new NumberPlateUtility();
-        HttpStatus response = rc.postNumberPlate(np.completeImage());
+        HttpStatus response = postClient.postNumberPlate(np.completeImage());
         if (response == HttpStatus.ACCEPTED) {
             return "Request sent successfully.";
         }

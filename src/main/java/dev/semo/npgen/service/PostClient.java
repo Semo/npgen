@@ -11,8 +11,8 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class PostClient {
 
-    @Value(value = "${target.uri}")
-    public String uri;
+    @Value("${target.uri}")
+    private String uri;
 
     private RestTemplate restTemplate = new RestTemplate();
     private HttpHeaders headers = new HttpHeaders();
@@ -40,9 +40,9 @@ public class PostClient {
         };
         map.add("image", resource);
 
-        System.out.println(uri);
+        System.out.println(this.uri);
 
-        ResponseEntity<String> result = restTemplate.exchange(uri,
+        ResponseEntity<String> result = restTemplate.exchange(this.uri,
                 HttpMethod.POST,
                 requestEntity, String.class);
 
